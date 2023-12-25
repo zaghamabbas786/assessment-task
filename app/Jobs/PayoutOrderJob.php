@@ -33,6 +33,18 @@ class PayoutOrderJob implements ShouldQueue
      */
     public function handle(ApiService $apiService)
     {
-        // TODO: Complete this method
-    }
+        try {
+            $payoutResult = $apiService->sendPayout($this->order);
+    
+            if ($payoutResult) {
+                $this->order->update(['payout_status' => Order::STATUS_PAID]);
+            } else {
+                
+                \Log::error('Payout failed for order ' . $this->order->id);
+                
+            }
+        } catch (\Exception $e) {
+            
+            \Log::error('Payout failed: ' . $e->getMessage());
+        }    }
 }

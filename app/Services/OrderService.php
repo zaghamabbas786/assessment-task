@@ -23,6 +23,30 @@ class OrderService
      */
     public function processOrder(array $data)
     {
-        // TODO: Complete this method
-    }
+        /**
+         * Because this method is depend of afiliateservice register  method so again it is confusing.
+         * if afiliate method will be clear the rest of thing will be clear  what exactly we want  to achive.
+        */
+
+        // $this->affiliateService->register($customerEmail, $customerName);
+  
+        if (!orderExists($data['order_id'])) {
+            Order::create([
+                'order_id' => $data['order_id'],
+                'subtotal_price' => $data['subtotal_price'],
+                'merchant_domain' => $data['merchant_domain'],
+                'discount_code' => $data['discount_code'],
+                'customer_email' => $data['customer_email'],
+                'customer_name' => $data['customer_name'],
+                'affiliate_id' => $affiliate->id,
+            ]);
+        }
+
+ }
+
+
+ protected function orderExists(string $orderId): bool
+ {
+     return Order::where('order_id', $orderId)->exists();
+ }
 }

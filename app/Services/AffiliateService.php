@@ -27,6 +27,20 @@ class AffiliateService
      */
     public function register(Merchant $merchant, string $email, string $name, float $commissionRate): Affiliate
     {
-        // TODO: Complete this method
+
+       /*
+            there are no proper description for this method i mean here things are not described properly as in parameter.
+            there are email and name swhich is confusing because in comment it is not described what to achive.
+            
+       */
+
+        $affiliate =  Affiliate::create([
+            'user_id' => $merchant->user_id,
+            'merchant_id'=> $merchant->id,
+            'commission_rate' => $commissionRate,
+            'discount_code' => $this->$apiService->createDiscountCode()[1] 
+        ]);
+
+        return $affiliate;
     }
 }

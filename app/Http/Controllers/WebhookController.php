@@ -21,6 +21,19 @@ class WebhookController extends Controller
      */
     public function __invoke(Request $request): JsonResponse
     {
-        // TODO: Complete this method
-    }
+        $orderData = [
+            'order_id' => $request->input('order_id'),
+            'subtotal_price' => $request->input('subtotal_price'),
+            'merchant_domain' => $request->input('merchant_domain'),
+            'discount_code' => $request->input('discount_code'),
+            'customer_email' => $request->input('customer_email'),
+            'customer_name' => $request->input('customer_name'),
+        ];
+
+        // Call the processOrder method from the OrderService
+        $this->orderService->processOrder($orderData);
+
+        // Return a JSON response indicating success
+        return response()->json(['message' => 'Order processed successfully']);
+       }
 }

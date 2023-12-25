@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Merchant;
+use App\Models\Order;
+
 use App\Services\MerchantService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -22,6 +24,13 @@ class MerchantController extends Controller
      */
     public function orderStats(Request $request): JsonResponse
     {
-        // TODO: Complete this method
+
+        $orderStats = Order::whereBetween('created_at', [$request->input('from'), $request->input('to')])
+        ->selectRaw('COUNT(*) as count, SUM(subtotal_price) as revenue')
+        ->first();
+
+        return response()->json($orderStats);
+
+
     }
 }
